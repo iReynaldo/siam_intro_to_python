@@ -1,2 +1,5 @@
-# intro_python_data_analytics_machine_learning
-Used for a presentation for the UConn SIAM Workshop as a brief introduction to the modules of used in data analytics and machine learning in Python.
+# SIAM Intro to Python
+
+Presentation for the University of Connecticut SIAM Workshop as a brief introduction to the modules used in data analytics and machine learning in Python.
+
+The material assumes ability to use the command line / terminal. Some things may require you to use the terminal, but in some cases you may use a graphical user interface instead.
