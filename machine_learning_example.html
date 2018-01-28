@@ -12261,7 +12261,7 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Let's-set-up-the-data">Let's set up the data<a class="anchor-link" href="#Let's-set-up-the-data">&#182;</a></h3><p>I want to predict this year's groundhog prediction, and maybe even later years. We can use last year's weather data to predict this year's prediction.</p>
 <p>To do this, lets create a <a href="http://scikit-learn.org/stable/modules/svm.html">Support Vector Machines</a> to regress againts each of the temperature features.</p>
-<p>For this I'll use <a href="http://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html">scikit-learn</a>.</p>
+<p>For this I'll use <code>scikit-learn</code>.</p>
 <p>However, first let's setup the data appropriately.</p>
 
 </div>
@@ -12727,7 +12727,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Great! Now we have the previous year weather temperatures with the current year <code>Punxsutawney Phil</code> predictions. All we have to do now is remove that <code>NaN</code> row introduced, create our model, and test!</p>
+<p>Great! Now we have the previous year weather temperatures with the current year <code>Punxsutawney Phil</code> predictions. All we have to do now is remove that <code>NaN</code> row introduced, create our <a href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html">model</a>, and test!</p>
 
 </div>
 </div>
@@ -12742,6 +12742,7 @@ div#notebook {
 <span class="n">X</span> <span class="o">=</span> <span class="n">training_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;February Average Temperature&#39;</span><span class="p">:</span><span class="s1">&#39;March Average Temperature (Pennsylvania)&#39;</span><span class="p">]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">training_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Punxsutawney Phil&#39;</span><span class="p">]</span>
 
+<span class="c1"># Create the Model</span>
 <span class="n">groundhog_svr</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">)</span>
 <span class="n">groundhog_model</span> <span class="o">=</span> <span class="n">groundhog_svr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
@@ -12751,28 +12752,29 @@ div#notebook {
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now that we have created the model, we can test its accuracy and other performance metrics. Luckily, <code>scikit-learn</code> comes with a <a href="http://scikit-learn.org/stable/modules/model_evaluation.html">bunch of useful tools to do this</a>.</p>
+<p>I didn't set aside much data for testing apara from the last row of the data. So I'm just going to illustrate how to measure these metrics. Do note however, that the performance test I'm doing here is completely bogus, because I'm testing the model using data that I used to train it. Theoretically it should get nearly %100 on every goodness measure.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Plot the results</span>
-<span class="c1"># plt.scatter(training_data.loc[:, &#39;Year&#39;], y, color=&#39;darkorange&#39;, label=&#39;data&#39;)</span>
-<span class="c1"># plt.plot(X, groundhog_predictions, color=&#39;navy&#39;, lw=2, label=&#39;RBF model&#39;)</span>
-
-
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get the data for our performance test</span>
 <span class="n">groundhog_predictions</span> <span class="o">=</span> <span class="n">groundhog_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="c1"># note, our index labels starts at 10 now due to filtering</span>
 <span class="n">groudhog_ground_truth</span> <span class="o">=</span> <span class="n">groundhog_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">10</span><span class="p">:,</span> <span class="s1">&#39;Punxsutawney Phil&#39;</span><span class="p">]</span>
-<span class="c1"># &gt;&gt;&gt; y_pred = [0, 2, 1, 3]</span>
-<span class="c1"># &gt;&gt;&gt; y_true = [0, 1, 2, 3]</span>
-<span class="c1"># &gt;&gt;&gt; accuracy_score(y_true, y_pred)</span>
-<span class="c1"># 0.5</span>
-<span class="c1"># &gt;&gt;&gt; accuracy_score(y_true, y_pred, normalize=False)</span>
-<span class="c1"># 2</span>
+
+<span class="c1"># Check the accuracy</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">groudhog_ground_truth</span><span class="p">,</span> <span class="n">groundhog_predictions</span><span class="p">))</span>
-<span class="c1"># &gt;&gt;&gt; print(metrics.classification_report(twenty_test.target, predicted,</span>
-<span class="c1"># ...     target_names=twenty_test.target_names))</span>
-<span class="c1"># ...                                   </span>
+<span class="c1"># Check other performance metrics              </span>
 <span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">groudhog_ground_truth</span><span class="p">,</span> <span class="n">groundhog_predictions</span><span class="p">))</span>
 </pre></div>
 
@@ -12824,22 +12826,27 @@ avg / total       0.95      0.96      0.95       121
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now lets predict this year's groundhog event, and consecuently our weather future!
-<img src="http://theotherpress.ca/wp-content/uploads/2017/01/humour_groundhog-1024x683.jpg" alt="title"></p>
+<p>Now lets predict this year's groundhog event, and consecuently our weather future!</p>
+<p><img src="http://theotherpress.ca/wp-content/uploads/2017/01/humour_groundhog-1024x683.jpg" alt="title"></p>
+<p>Since we shifted the data down one row, we have one row that wasn't used in the training. That last row is the one we will predict. That last row should correspond to this year (but I could be wrong because I didn't check when these records stopped... lets do it anyway!).</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">last_years_weather</span> <span class="o">=</span> <span class="n">groundhog_df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get last row sample which was removed when creating the training set</span>
+<span class="n">last_years_weather</span> <span class="o">=</span> <span class="n">groundhog_df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> 
                                               <span class="s1">&#39;February Average Temperature&#39;</span><span class="p">:</span><span class="s1">&#39;March Average Temperature (Pennsylvania)&#39;</span><span class="p">]</span>
+<span class="c1"># Prediciton for those weather conditions</span>
 <span class="n">pred</span> <span class="o">=</span> <span class="n">groundhog_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">last_years_weather</span><span class="p">)</span>
 
+<span class="c1"># Create a reverse mapper of the number representation back to the string represenation</span>
 <span class="n">inv_mapper</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mapper</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="c1"># Show the prediction</span>
 <span class="n">inv_mapper</span><span class="p">[</span><span class="n">pred</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
 </pre></div>
 
@@ -12853,7 +12860,7 @@ avg / total       0.95      0.96      0.95       121
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[24]:</div>
+<div class="prompt output_prompt">Out[10]:</div>
 
 
 
@@ -12872,7 +12879,7 @@ avg / total       0.95      0.96      0.95       121
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h1><p>We will have 6 more weeks for winter</p>
+<h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h1><p>We will have 6 more weeks of winter</p>
 
 </div>
 </div>
