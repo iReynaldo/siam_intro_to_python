@@ -6,7 +6,7 @@ The material assumes ability to use the command line / terminal. Some things may
 
 #### Contact
 
-Reynaldo Morillo
-Computer Science & Engineering
-University of Connecticut 
-reynaldo.morillo@uconn.edu
+Reynaldo Morillo   
+Computer Science & Engineering   
+University of Connecticut    
+reynaldo.morillo@uconn.edu   
