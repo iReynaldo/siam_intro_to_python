@@ -6,7 +6,7 @@ The material assumes ability to use the command line / terminal. Some things may
 
 #### Further Topics in Python
 
-The slides for "Further Topics in Python" is based around tutorials, guides, and other slides I found online. I think they should be very useful to helping you get onboard with using Python as data analytics solution.
+The slides for "Further Topics in Python" is based around tutorials, guides, and other slides I found online. I think they should be very useful to helping you get onboard with using Python as your data analytics weapon on choice!
 
 > **Note:** _Lecture-4-Matplotlib.ipynb_ in my repository is a slightly modified version of the one by [Robert Johansson](https://github.com/jrjohansson), who created well done [lecture series in jupyter notebooks for python in data science](https://github.com/jrjohansson/scientific-python-lectures).
 
